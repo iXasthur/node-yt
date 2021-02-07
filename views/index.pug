@@ -11,5 +11,6 @@ block content
         each v in video_list
             h4
                 a(href='/watch?id=' + v.id) #{v.name}
+                |  (likes: #{v.like_count}, dislikes: #{v.dislike_count})
     else
         h4 Nothing available right now
