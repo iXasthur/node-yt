@@ -24,10 +24,26 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
+var mongoose = require('mongoose')
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+
+async function start() {
+  try {
+    await mongoose.connect('mongodb://localhost:27017/', {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true
+    })
+    console.log('- Connected to MongoDB');
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+start();
 
 /**
  * Normalize a port into a number, string, or false.

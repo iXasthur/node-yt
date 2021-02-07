@@ -5,9 +5,9 @@ var VideoProvider = require('../src/VideoProvider');
 var path = require('path')
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-    const video = VideoProvider.getVideoByID(req.query.id)
-    const filePath = path.join(VideoProvider.directory, video.fine_name)
+router.get('/', async function (req, res, next) {
+    const video = await VideoProvider.getByID(req.query.id)
+    const filePath = path.join(VideoProvider.directory, video.file_name)
 
     const stat = fs.statSync(filePath)
     const fileSize = stat.size

@@ -7,8 +7,9 @@ block content
             a(href='/upload') Upload
     h2 Videos:
 
-    each v in video_list
-        h4
-            a(href='/watch?id=' + v.id) #{v.name}
+    if video_list.length
+        each v in video_list
+            h4
+                a(href='/watch?id=' + v.id) #{v.name}
     else
-        p Nothing available right now
+        h4 Nothing available right now

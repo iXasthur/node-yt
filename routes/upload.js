@@ -1,7 +1,7 @@
 var express = require('express');
 var multer = require('multer');
 var router = express.Router();
-var app = require('../app')
+var path = require('path')
 var VideoProvider = require('../src/VideoProvider')
 
 var storageConfig = multer.diskStorage({
@@ -9,7 +9,7 @@ var storageConfig = multer.diskStorage({
         cb(null, VideoProvider.directory);
     },
     filename: (req, file, cb) =>{
-        cb(null, file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
 
@@ -23,16 +23,24 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    var upload = multer({ storage: storageConfig }).single('mov')
-    upload(req, res, function (err) {
+    let upload = multer({ storage: storageConfig }).single('mov')
+    upload(req, res, async function (err) {
         if (err instanceof multer.MulterError) {
             // A Multer error occurred when uploading.
+            console.log(err)
+            res.redirect('/');
+            return
         } else if (err) {
             // An unknown error occurred when uploading.
+            console.log(err)
+            res.redirect('/');
+            return
         }
 
         // Everything went fine.
-        res.redirect('/');
+        await VideoProvider.register(req.body.name, req.file.filename)
+
+        res.redirect('/')
     })
 });
 

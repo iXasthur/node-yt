@@ -5,5 +5,5 @@ block content
         a(href='/') Back
     h1 Watching '#{video_name}'
     div(class='watch-video-div')
-        video(controls=true)
+        video(controls=true, autoplay=true)
             source(src='/video?id=' + video_id, type='video/mp4')

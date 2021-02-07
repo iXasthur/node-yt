@@ -6,6 +6,9 @@ block content
     h1= 'Upload video'
     form(class='upload-form', action='/upload', enctype='multipart/form-data', method='POST')
         p
+            label(for='name') Title
+            input(type='text', autocomplete="off", id='name', name='name', required=true)
+        p
             label(for='mov') Please select file
             input(type='file', id='mov', name='mov', accept='.mp4', required=true)
         p

@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-
-let Video = require('../src/Video');
+var VideoProvider = require('../src/VideoProvider')
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
     let headTitle = 'node-yt'
-    let videos = []
+
+    let videos = await VideoProvider.getAll()
 
     res.render('index', {
         head_title: headTitle,
