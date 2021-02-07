@@ -8,7 +8,6 @@ router.get('/', function (req, res, next) {
         let headTitle = 'Video Title';
         res.render('watch', {
             head_title: headTitle,
-            video_name: 'nil',
             video_id: id
         });
     } else {
