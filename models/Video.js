@@ -16,7 +16,7 @@ class Video {
             let array = []
             for (let i = 0; i < count; i++) {
                 let id = i
-                let video = new Video(id, 'name of video with id = ' + id, i*i, Date())
+                let video = new Video(id, 'Name of video with id = ' + id, i*i, Date())
                 array.push(video)
             }
             return array
@@ -25,3 +25,5 @@ class Video {
         }
     }
 }
+
+module.exports = Video;

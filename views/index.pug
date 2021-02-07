@@ -6,4 +6,9 @@ block content
         h1
             a(href='/upload') Upload
     h2 Videos:
-    p Nothing available right now
+
+    each v in video_list
+        h4
+            a(href='/watch?id=' + v.id) #{v.name}
+    else
+        p Nothing available right now
