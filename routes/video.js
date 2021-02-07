@@ -1,8 +1,8 @@
-var express = require('express');
-var fs = require('fs');
-var router = express.Router();
-var VideoProvider = require('../src/VideoProvider');
-var path = require('path')
+const express = require('express');
+const fs = require('fs');
+const router = express.Router();
+const VideoProvider = require('../src/VideoProvider');
+const path = require('path')
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {

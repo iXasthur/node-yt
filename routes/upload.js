@@ -1,10 +1,10 @@
-var express = require('express');
-var multer = require('multer');
-var router = express.Router();
-var path = require('path')
-var VideoProvider = require('../src/VideoProvider')
+const express = require('express');
+const multer = require('multer');
+const router = express.Router();
+const path = require('path')
+const VideoProvider = require('../src/VideoProvider')
 
-var storageConfig = multer.diskStorage({
+const storageConfig = multer.diskStorage({
     destination: (req, file, cb) =>{
         cb(null, VideoProvider.directory);
     },

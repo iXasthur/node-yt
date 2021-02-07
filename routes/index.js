@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var VideoProvider = require('../src/VideoProvider')
+const express = require('express');
+const router = express.Router();
+const VideoProvider = require('../src/VideoProvider')
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {

@@ -12,7 +12,7 @@ a {
   flex-direction: row;
 }
 
-.horizontal-stack a {
+.horizontal-stack h1 a {
   margin-left: 15px;
 }
 

@@ -1,4 +1,4 @@
-var Video = require("./model/Video");
+const Video = require("./model/Video");
 
 class VideoProvider {
     static directory = 'movs_root'
@@ -17,6 +17,10 @@ class VideoProvider {
             file_name: filename
         })
         await video.save()
+    }
+
+    static async deleteByID(id) {
+        await Video.findByIdAndDelete(id)
     }
 }
 
