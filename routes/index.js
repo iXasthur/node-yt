@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-let Video = require('../models/Video');
+let Video = require('../src/Video');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {

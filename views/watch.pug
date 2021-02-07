@@ -1,4 +1,9 @@
 extends layout
 
 block content
-    h1 Watching video with id = #{video_id}
+    h1(class='back-h1')
+        a(href='/') Back
+    h1 Watching '#{video_name}'
+    div(class='watch-video-div')
+        video(controls=true)
+            source(src='/video?id=' + video_id, type='video/mp4')
