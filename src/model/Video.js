@@ -13,6 +13,10 @@ const schema = new Schema({
         type: Number,
         default: 0
     },
+    dislike_count: {
+        type: Number,
+        default: 0
+    },
     upload_date: {
         type: Date,
         default: Date()
