@@ -6,3 +6,24 @@ body {
 a {
   color: #00B7FF;
 }
+
+.horizontal-stack {
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-stack a {
+  margin-left: 15px;
+}
+
+.back-h1 {
+  padding-bottom: 15px;
+}
+
+.upload-form {
+
+}
+
+.upload-form label {
+  margin-right: 10px;
+}

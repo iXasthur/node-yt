@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET users listing. */
 router.get('/', function (req, res, next) {
-    let head_title = 'node-yt'
+    let head_title = 'Upload to node-yt'
 
-    res.render('index', {
+    res.render('upload', {
         head_title: head_title
     });
 });

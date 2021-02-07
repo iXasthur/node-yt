@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1(class='back-h1')
+        a(href='/') Back
+    h1= 'Upload video'
+    form(class='upload-form', action='/upload', method='POST')
+        p
+            label(for='mov') Please select file
+            input(type='file', id='mov', name='mov', required=true)
+        p
+            input(type='submit', value='Submit')
+
