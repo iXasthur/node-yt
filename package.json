@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "server": "nodemon app.js"
+    "server_prod": "node app.js",
+    "server_dev": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "start_dev": "concurrently \"npm run server_dev\" \"npm run client\""
   },
   "repository": {
     "type": "git",
