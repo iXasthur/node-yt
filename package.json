@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/iXasthur/node-yt#readme",
   "dependencies": {
+    "config": "^3.3.4",
     "express": "^4.17.1",
     "mongoose": "^5.11.19"
   },
