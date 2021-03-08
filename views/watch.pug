@@ -1,8 +1,0 @@
-extends layout
-
-block content
-    h1(class='back-h1')
-        a(href='/') Back
-    div(class='watch-video-div')
-        video(controls=true, autoplay=true)
-            source(src='/video?id=' + video_id, type='video/mp4')
