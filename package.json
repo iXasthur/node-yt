@@ -1,0 +1,31 @@
+{
+  "name": "node-yt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iXasthur/node-yt.git"
+  },
+  "keywords": [
+    "mern"
+  ],
+  "author": "Mikhail Kavaleuski <xasthur009@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iXasthur/node-yt/issues"
+  },
+  "homepage": "https://github.com/iXasthur/node-yt#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.19"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "nodemon": "^2.0.7"
+  }
+}
