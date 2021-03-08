@@ -6,6 +6,14 @@ const { check, validationResult } = require('express-validator')
 const User = require('../models/User')
 const router = Router()
 
+function createToken(user) {
+    return  jwt.sign(
+        {userId: user.id},
+        config.get('jwtSecret'),
+        {expiresIn: '1h'}
+    )
+}
+
 router.post(
     '/signup',
     [
@@ -26,7 +34,7 @@ router.post(
 
             if (await User.findOne({email})) {
                 return res.status(400).json({
-                    message: "User with such email already exists"
+                    message: "User with that email already exists"
                 })
             }
 
@@ -38,8 +46,12 @@ router.post(
 
             await user.save()
 
+            const token = createToken(user)
+
             res.status(201).json({
-                message: "Created new user"
+                message: "Created new user",
+                token: token,
+                userId: user.id,
             })
 
         } catch (e) {
@@ -75,18 +87,14 @@ router.post(
                 })
             }
 
-            const isMatch = await bcrypt.compare(password, user.password)
+            const isMatch = await bcrypt.compare(password, user.hashedPassword)
             if (!isMatch) {
                 return res.status(400).json({
                     message: "Invalid password"
                 })
             }
 
-            const token = jwt.sign(
-                {userId: user.id},
-                config.get('jwtSecret'),
-                {expiresIn: '1h'}
-            )
+            const token = createToken(user)
 
             res.json({
                 token: token,
@@ -94,6 +102,7 @@ router.post(
             })
 
         } catch (e) {
+            console.log(e)
             res.status(500).json({
                 message: "Something went wrong..."
             })
