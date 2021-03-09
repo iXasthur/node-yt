@@ -2,6 +2,7 @@ const { Router } = require('express')
 const config = require('config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const verifyToken = require('../middlewares/verifyToken.middleware')
 const { check, validationResult } = require('express-validator')
 const User = require('../models/User')
 const router = Router()
@@ -48,10 +49,9 @@ router.post(
 
             const token = createToken(user)
 
+            res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 })
             res.status(201).json({
-                message: "Created new user",
-                token: token,
-                userId: user.id,
+                message: "Successfully signed up",
             })
 
         } catch (e) {
@@ -96,9 +96,51 @@ router.post(
 
             const token = createToken(user)
 
+            res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 })
+
             res.json({
-                token: token,
-                userId: user.id,
+                message: "Successfully signed in",
+            })
+
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({
+                message: "Something went wrong..."
+            })
+        }
+    }
+)
+
+router.post(
+    '/signout',
+    async (req, res) => {
+        try {
+
+            res.cookie('jwt', 'nil', {
+                expires: new Date(Date.now()),
+                httpOnly: true,
+            })
+            res.json({
+                message: "Successfully signed out",
+            })
+
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({
+                message: "Something went wrong..."
+            })
+        }
+    }
+)
+
+router.get(
+    '/verify',
+    verifyToken,
+    async (req, res) => {
+        try {
+
+            res.json({
+                message: "Successfully verified",
             })
 
         } catch (e) {

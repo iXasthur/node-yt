@@ -1,16 +1,22 @@
 import React, {useContext} from 'react'
-import {NavLink, useHistory} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {AuthContext} from "../context/AuthContext";
+import {useHttp} from "../hooks/http.hook";
 
 export const NavBar = () => {
-    const history = useHistory()
+    const {request} = useHttp()
 
     const authContext = useContext(AuthContext)
 
-    const logoutHandler = (event) => {
+    const logoutHandler = async (event) => {
         event.preventDefault()
-        authContext.signOut()
-        history.push('/')
+
+        try {
+            await request('/api/auth/signout', 'POST')
+            authContext.verify()
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (

@@ -1,41 +1,38 @@
 import {useState, useCallback, useEffect} from 'react'
-
-const storageName = 'userData'
+import {useHttp} from "./http.hook";
 
 export const useAuth = () => {
-    const [token, setToken] = useState(null)
-    const [userId, setUserId] = useState(null)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [ready, setReady] = useState(false)
 
-    const signIn = useCallback(
-        (jwtToken, id) => {
-            setToken(jwtToken)
-            setUserId(id)
-            localStorage.setItem(storageName, JSON.stringify({
-                userId: id,
-                token: jwtToken
-            }))
-        },
-        []
-    )
+    const {request} = useHttp()
 
-    const signOut = useCallback(
-        () => {
-            setToken(null)
-            setUserId(null)
-            localStorage.removeItem(storageName)
+    const verify = useCallback(
+        async () => {
+            try {
+                await request('/api/auth/verify')
+                setIsAuthenticated(true)
+            } catch {
+                try {
+                    await request('/api/auth/signout', 'POST') // remove local cookie
+                } finally {
+                    setIsAuthenticated(false)
+                }
+            }
         },
-        []
+        [request]
     )
 
     useEffect(
         () => {
-            const data = JSON.parse(localStorage.getItem(storageName))
-            if (data && data.token) {
-                signIn(data.token, data.userId)
+            async function v() {
+                await verify()
+                setReady(true)
             }
+            v()
         },
-        [signIn]
+        [verify]
     )
 
-    return {token, userId, signIn, signOut}
+    return {isAuthenticated, verify, ready}
 }

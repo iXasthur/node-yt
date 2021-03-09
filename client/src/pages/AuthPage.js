@@ -5,7 +5,6 @@ import {AuthContext} from "../context/AuthContext";
 
 export const AuthPage = () => {
     const authContext = useContext(AuthContext)
-
     const message = useMessage()
     const {loading, error, request, clearError} = useHttp()
     const [form, setForm] = useState({
@@ -24,27 +23,19 @@ export const AuthPage = () => {
 
     const signupHandler = async () => {
         try {
-            const data = await request('/api/auth/signup', 'POST', {...form})
-            if (data && data.token && data.userId) {
-                authContext.signIn(data.token, data.userId)
-            } else {
-                message('Received invalid data form server')
-            }
+            await request('/api/auth/signup', 'POST', {...form})
+            authContext.verify()
         } catch {
-            // Error was handled in hook
+
         }
     }
 
     const signinHandler = async () => {
         try {
-            const data = await request('/api/auth/signin', 'POST', {...form})
-            if (data && data.token && data.userId) {
-                authContext.signIn(data.token, data.userId)
-            } else {
-                message('Received invalid data form server')
-            }
+            await request('/api/auth/signin', 'POST', {...form})
+            authContext.verify()
         } catch {
-            // Error was handled in hook
+
         }
     }
 
