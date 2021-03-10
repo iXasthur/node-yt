@@ -7,6 +7,17 @@ export const useAuth = () => {
 
     const {request} = useHttp()
 
+    const signOut = useCallback(
+        async () => {
+            try {
+                await request('/api/auth/signout', 'POST') // remove cookie
+            } finally {
+                setIsAuthenticated(false)
+            }
+        },
+        [request]
+    )
+
     const verify = useCallback(
         async () => {
             console.log('Verifying jwt')
@@ -14,14 +25,10 @@ export const useAuth = () => {
                 await request('/api/auth/verify')
                 setIsAuthenticated(true)
             } catch {
-                try {
-                    await request('/api/auth/signout', 'POST') // remove local cookie
-                } finally {
-                    setIsAuthenticated(false)
-                }
+                await signOut()
             }
         },
-        [request]
+        [request, signOut]
     )
 
     useEffect(
@@ -35,5 +42,5 @@ export const useAuth = () => {
         [verify]
     )
 
-    return {isAuthenticated, verify, ready}
+    return {isAuthenticated, verify, signOut, ready}
 }

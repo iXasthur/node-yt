@@ -1,13 +1,13 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {AuthContext} from "../context/AuthContext";
-import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
-const Axios = require('axios');
+import {Loader} from "../components/Loader";
 
 
 export const VideoUploadPage = () => {
     const authContext = useContext(AuthContext)
 
-    const [verified, setVerified] = useState(false)
+    const [loading, setLoading] = useState(false);
+
     const [fileTitle, setFileTitle] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileName, setSelectedFileName] = useState('');
@@ -29,33 +29,34 @@ export const VideoUploadPage = () => {
     const handleSubmit = event => {
         event.preventDefault()
 
+        async function upload(data) {
+            setLoading(true)
+
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: data
+            })
+
+            console.log(response)
+
+            if (response.status === 401) {
+                authContext.signOut()
+                setLoading(false)
+            } else {
+                setFileTitle('')
+                setSelectedFile(null)
+                setSelectedFileName('');
+                fileInputRef.current.value = ""
+                setLoading(false)
+            }
+        }
+
         const data = new FormData();
         data.append("title", fileTitle);
         data.append("video", selectedFile);
 
-        Axios.post("/api/videos/upload", data)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-
-        setFileTitle('')
-        setSelectedFile(null)
-        setSelectedFileName('');
-        fileInputRef.current.value = ""
+        upload(data)
     };
-
-    useEffect(() => {
-        async function v() {
-            await authContext.verify()
-            setVerified(authContext.isAuthenticated)
-        }
-        v()
-    }, [authContext])
-
-    if (!verified) {
-        return (
-            <LoaderScreenCentered />
-        )
-    }
 
     return(
         <div className="row">
@@ -63,6 +64,7 @@ export const VideoUploadPage = () => {
                 <div className="card blue-grey darken-1">
                     <form action="#" onSubmit={handleSubmit}>
                         <div className="card-content white-text">
+                            { loading ? <Loader /> : <div/>}
                             <div style={{marginTop: 30}}>
                                 <div className="input-field">
                                     <input

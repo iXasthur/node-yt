@@ -6,7 +6,6 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.1",
-    "axios": "^0.21.1",
     "i": "^0.3.6",
     "materialize-css": "^1.0.0-rc.2",
     "npm": "^7.6.1",
@@ -28,7 +27,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:5000/",
   "browserslist": {
     "production": [
       ">0.2%",

@@ -8,14 +8,15 @@ import {NavBar} from "./components/NavBar";
 import {LoaderScreenCentered} from "./components/LoaderScreenCentered";
 
 function App() {
-    const {isAuthenticated, verify, ready} = useAuth()
+    const {isAuthenticated, verify, signOut, ready} = useAuth()
 
     const routes = useRoutes(isAuthenticated)
 
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
-            verify
+            verify,
+            signOut
         }}>
             <Router>
                 <NavBar />

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {AuthContext} from "../context/AuthContext";
 import {NavLink} from "react-router-dom";
 import {useVideos} from "../hooks/videos.hook";
@@ -7,19 +7,15 @@ import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
 export const VideosPage = () => {
     const authContext = useContext(AuthContext)
 
-    const [verified, setVerified] = useState(false)
-
-    const {videos, ready} = useVideos()
+    const {videos, error, ready} = useVideos()
 
     useEffect(() => {
-        async function v() {
-            await authContext.verify()
-            setVerified(authContext.isAuthenticated)
+        if (error != null) {
+            authContext.signOut()
         }
-        v()
-    }, [authContext])
+    }, [error, authContext])
 
-    if (!ready || !verified) {
+    if (!ready || !!error) {
         return (
             <LoaderScreenCentered />
         )

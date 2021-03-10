@@ -3,6 +3,7 @@ import {useHttp} from "./http.hook";
 
 export const useVideos = () => {
     const [videos, setVideos] = useState([])
+    const [error, setError] = useState(null)
     const [ready, setReady] = useState(false)
 
     const {request} = useHttp()
@@ -14,6 +15,7 @@ export const useVideos = () => {
                 setVideos(data.videos || [])
             } catch (e) {
                 console.log(e)
+                setError(e)
             }
         },
         [request]
@@ -30,5 +32,5 @@ export const useVideos = () => {
         [fetchVideos]
     )
 
-    return {videos, fetchVideos, ready}
+    return {videos, error, ready}
 }
