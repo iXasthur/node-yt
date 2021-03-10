@@ -1,34 +1,32 @@
 import React, {useContext} from 'react'
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
+import {NavLink} from "react-router-dom";
+import {useVideos} from "../hooks/videos.hook";
+import {Loader} from "../components/Loader";
 
 export const VideosPage = () => {
     const authContext = useContext(AuthContext)
 
-    const {loading, error, request, clearError} = useHttp()
+    const {videos, ready} = useVideos()
 
-    const videosHandler = async () => {
-        try {
-            await authContext.verify()
-            const data = await request('/api/videos')
-        } catch (e) {
-
-        }
+    if (!ready) {
+        return (
+            <div className='centered'>
+                <Loader />
+            </div>
+        )
     }
 
     return (
-        <div>
-            <div className="card blue-grey darken-1">
-                <div className="card-action">
-                    <button
-                        className="btn yellow darken-4"
-                        style={{marginRight: 10}}
-                        onClick={videosHandler}
-                    >
-                        list!!!
-                    </button>
-                </div>
-            </div>
+        <div className="collection" style={{marginTop: '5rem'}}>
+            {
+                videos.map(video => {
+                    return(
+                        <NavLink key={video._id} className="collection-item" to={`/watch/${video._id}`}>{video.title}</NavLink>
+                    )
+                })
+            }
         </div>
     )
 }

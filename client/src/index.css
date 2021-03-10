@@ -6,3 +6,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.watch-video-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.watch-video-div video {
+    width: 1024px;
+}
