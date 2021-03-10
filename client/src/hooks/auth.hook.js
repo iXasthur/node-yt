@@ -7,22 +7,6 @@ export const useAuth = () => {
 
     const {request} = useHttp()
 
-    // const signIn = useCallback(
-    //     async (email, password) => {
-    //         try {
-    //             await request('/api/auth/verify')
-    //             setIsAuthenticated(true)
-    //         } catch {
-    //             try {
-    //                 await request('/api/auth/signout', 'POST') // remove local cookie
-    //             } finally {
-    //                 setIsAuthenticated(false)
-    //             }
-    //         }
-    //     },
-    //     [request]
-    // )
-
     const verify = useCallback(
         async () => {
             console.log('Verifying jwt')
