@@ -1,10 +1,13 @@
 const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
-    localFilePath: {
+    title: {
         type: String,
-        required: true,
-        unique: true
+        required: true
+    },
+    fileName: {
+        type: String,
+        required: true
     }
 })
 
