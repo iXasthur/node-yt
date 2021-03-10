@@ -44,6 +44,7 @@ export const VideoUploadPage = () => {
     return(
         <div className="row">
             <div className="col s6 offset-s3">
+                <h1>Upload video</h1>
                 <div className="card blue-grey darken-1">
                     <form action="#" onSubmit={handleSubmit}>
                         <div className="card-content white-text">
@@ -53,6 +54,7 @@ export const VideoUploadPage = () => {
                                         id="title"
                                         type="text"
                                         name="title"
+                                        autocomplete="off"
                                         value={fileTitle}
                                         onChange={changeTitleHandler}
                                         required

@@ -5,17 +5,12 @@ import 'materialize-css'
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 import {NavBar} from "./components/NavBar";
+import {Loader} from "./components/Loader";
 
 function App() {
     const {isAuthenticated, verify, ready} = useAuth()
 
     const routes = useRoutes(isAuthenticated)
-
-    if (!ready) {
-        return (
-            <div><h1>LOADER...</h1></div>
-        )
-    }
 
     return (
         <AuthContext.Provider value={{
@@ -23,10 +18,17 @@ function App() {
             verify
         }}>
             <Router>
-                { isAuthenticated && <NavBar/> }
-                <div className="container">
-                    {routes}
-                </div>
+                <NavBar hideTabs={!isAuthenticated} />
+                { ready
+                    ?
+                        <div className="container">
+                            {routes}
+                        </div>
+                    :
+                        <div className='centered'>
+                            <Loader />
+                        </div>
+                }
             </Router>
         </AuthContext.Provider>
     )

@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {AuthContext} from "../context/AuthContext";
 import {useHttp} from "../hooks/http.hook";
 
-export const NavBar = () => {
+export const NavBar = ({ hideTabs }) => {
     const {request} = useHttp()
 
     const authContext = useContext(AuthContext)
@@ -23,11 +23,16 @@ export const NavBar = () => {
         <nav>
             <div className="nav-wrapper blue darken-1" style={{ padding: '0 2rem' }}>
                 <span className="brand-logo">Node-yt</span>
-                <ul id="nav-mobile" className="right hide-on-med-and-down">
-                    <li><NavLink to={'/videos'}>Videos</NavLink></li>
-                    <li><NavLink to={'/upload'}>Upload</NavLink></li>
-                    <li><a href='/' onClick={logoutHandler}>Sign Out</a></li>
-                </ul>
+                { !hideTabs
+                    ?
+                        <ul id="nav-mobile" className="right hide-on-med-and-down">
+                            <li><NavLink to={'/videos'}>Videos</NavLink></li>
+                            <li><NavLink to={'/upload'}>Upload</NavLink></li>
+                            <li><a href='/' onClick={logoutHandler}>Sign Out</a></li>
+                        </ul>
+                    :
+                        <div />
+                }
             </div>
         </nav>
     )
