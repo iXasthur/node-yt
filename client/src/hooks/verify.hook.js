@@ -8,7 +8,6 @@ export const useVerify = () => {
 
     const verify = useCallback(
         async () => {
-            console.log('Verifying jwt from verifier')
             try {
                 await request('/api/auth/verify')
                 setVerified(true)
