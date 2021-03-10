@@ -5,7 +5,7 @@ import 'materialize-css'
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 import {NavBar} from "./components/NavBar";
-import {Loader} from "./components/Loader";
+import {LoaderScreenCentered} from "./components/LoaderScreenCentered";
 
 function App() {
     const {isAuthenticated, verify, ready} = useAuth()
@@ -25,9 +25,7 @@ function App() {
                             {routes}
                         </div>
                     :
-                        <div className='centered'>
-                            <Loader />
-                        </div>
+                        <LoaderScreenCentered />
                 }
             </Router>
         </AuthContext.Provider>

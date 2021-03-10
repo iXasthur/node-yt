@@ -1,11 +1,13 @@
-import React, {useContext, useState, useRef} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {AuthContext} from "../context/AuthContext";
+import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
 const Axios = require('axios');
 
 
 export const VideoUploadPage = () => {
     const authContext = useContext(AuthContext)
 
+    const [verified, setVerified] = useState(false)
     const [fileTitle, setFileTitle] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileName, setSelectedFileName] = useState('');
@@ -41,10 +43,23 @@ export const VideoUploadPage = () => {
         fileInputRef.current.value = ""
     };
 
+    useEffect(() => {
+        async function v() {
+            await authContext.verify()
+            setVerified(authContext.isAuthenticated)
+        }
+        v()
+    }, [authContext])
+
+    if (!verified) {
+        return (
+            <LoaderScreenCentered />
+        )
+    }
+
     return(
         <div className="row">
             <div className="col s6 offset-s3">
-                <h1>Upload video</h1>
                 <div className="card blue-grey darken-1">
                     <form action="#" onSubmit={handleSubmit}>
                         <div className="card-content white-text">

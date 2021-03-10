@@ -12,11 +12,6 @@ export const AuthPage = () => {
         password: ''
     })
 
-    useEffect(() => {
-        message(error)
-        clearError()
-    }, [error, message, clearError])
-
     const changeHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     }
@@ -38,6 +33,11 @@ export const AuthPage = () => {
 
         }
     }
+
+    useEffect(() => {
+        message(error)
+        clearError()
+    }, [error, message, clearError])
 
     return (
         <div className="row">

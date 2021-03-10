@@ -21,20 +21,20 @@ export const NavBar = () => {
 
     let title = 'Node-yt'
     const location = useLocation().pathname
-    switch (location) {
-        case '/': {
-            break
-        }
-        case '/auth': {
-            break
-        }
-        case '/watch': {
-            break
-        }
-        case '/upload': {
-            break
-        }
-    }
+    // switch (location) {
+    //     case '/': {
+    //         break
+    //     }
+    //     case '/auth': {
+    //         break
+    //     }
+    //     case '/watch': {
+    //         break
+    //     }
+    //     case '/upload': {
+    //         break
+    //     }
+    // }
 
     return (
         <nav>
