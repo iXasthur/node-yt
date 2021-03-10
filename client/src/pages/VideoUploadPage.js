@@ -29,33 +29,25 @@ export const VideoUploadPage = () => {
     const handleSubmit = event => {
         event.preventDefault()
 
-        async function upload(data) {
-            setLoading(true)
-
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: data
-            })
-
-            console.log(response)
-
-            if (response.status === 401) {
-                authContext.signOut()
-                setLoading(false)
-            } else {
-                setFileTitle('')
-                setSelectedFile(null)
-                setSelectedFileName('');
-                fileInputRef.current.value = ""
-                setLoading(false)
-            }
-        }
-
         const data = new FormData();
         data.append("title", fileTitle);
         data.append("video", selectedFile);
 
-        upload(data)
+        setLoading(true)
+
+        fetch('/api/upload', {
+            method: 'POST',
+            body: data
+        }).then(() => {
+            setFileTitle('')
+            setSelectedFile(null)
+            setSelectedFileName('');
+            fileInputRef.current.value = ""
+            setLoading(false)
+        }).catch(() => {
+            authContext.signOut()
+            setLoading(false)
+        })
     };
 
     return(
