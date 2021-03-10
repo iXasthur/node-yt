@@ -1,9 +1,11 @@
 import React from 'react'
-import {useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 export const VideoWatchPage = () => {
 
-    const videoId = useParams().id
+    const query = new URLSearchParams(useLocation().search)
+
+    const videoId = query.get('id')
     const srcApiUrl = '/api/videos/file/' + videoId
 
     return (

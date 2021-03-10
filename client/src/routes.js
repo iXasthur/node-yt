@@ -15,7 +15,7 @@ export const useRoutes = isAuthenticated => {
                 <Route path='/upload' exact>
                     <VideoUploadPage/>
                 </Route>
-                <Route path='/watch/:id' exact>
+                <Route path='/watch' exact>
                     <VideoWatchPage/>
                 </Route>
                 <Redirect to='/videos'/>

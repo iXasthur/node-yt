@@ -23,7 +23,7 @@ export const VideosPage = () => {
             {
                 videos.map(video => {
                     return(
-                        <NavLink key={video._id} className="collection-item" to={`/watch/${video._id}`}>{video.title}</NavLink>
+                        <NavLink key={video._id} className="collection-item" to={`/watch?id=${video._id}`}>{video.title}</NavLink>
                     )
                 })
             }
