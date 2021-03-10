@@ -2,11 +2,14 @@ const express = require('express')
 const config = require('config')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
 const app = express()
 
 app.use(cookieParser());
-app.use(express.json({ extended: true }))
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/auth', require('./routes/auth.rotes'))
 app.use('/api/videos', require('./routes/videos.routes'))
