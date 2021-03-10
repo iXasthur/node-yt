@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useLocation} from 'react-router-dom'
 import {AuthContext} from "../context/AuthContext";
 import {useHttp} from "../hooks/http.hook";
 
-export const NavBar = ({ hideTabs }) => {
+export const NavBar = () => {
     const {request} = useHttp()
 
     const authContext = useContext(AuthContext)
@@ -19,15 +19,31 @@ export const NavBar = ({ hideTabs }) => {
         }
     }
 
+    let title = 'Node-yt'
+    const location = useLocation().pathname
+    switch (location) {
+        case '/': {
+            break
+        }
+        case '/auth': {
+            break
+        }
+        case '/watch': {
+            break
+        }
+        case '/upload': {
+            break
+        }
+    }
+
     return (
         <nav>
             <div className="nav-wrapper blue darken-1" style={{ padding: '0 2rem' }}>
-                <span className="brand-logo">Node-yt</span>
-                { !hideTabs
+                <span className="brand-logo"><NavLink to={'/'}>{title}</NavLink></span>
+                { (location !== '/auth')
                     ?
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
-                            <li><NavLink to={'/videos'}>Videos</NavLink></li>
-                            <li><NavLink to={'/upload'}>Upload</NavLink></li>
+                            <li style={ location === '/upload' ? {background: 'darkcyan'} : {}}><NavLink to={'/upload'}>Upload</NavLink></li>
                             <li><a href='/' onClick={logoutHandler}>Sign Out</a></li>
                         </ul>
                     :

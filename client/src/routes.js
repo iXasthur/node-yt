@@ -9,7 +9,7 @@ export const useRoutes = isAuthenticated => {
     if (isAuthenticated) {
         return (
             <Switch>
-                <Route path='/videos' exact>
+                <Route path='/' exact>
                     <VideosPage/>
                 </Route>
                 <Route path='/upload' exact>
@@ -18,16 +18,16 @@ export const useRoutes = isAuthenticated => {
                 <Route path='/watch' exact>
                     <VideoWatchPage/>
                 </Route>
-                <Redirect to='/videos'/>
+                <Redirect to='/'/>
             </Switch>
         )
     } else {
         return (
             <Switch>
-                <Route path='/' exact>
+                <Route path='/auth' exact>
                     <AuthPage/>
                 </Route>
-                <Redirect to='/'/>
+                <Redirect to='/auth'/>
             </Switch>
         )
     }

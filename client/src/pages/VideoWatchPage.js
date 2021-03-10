@@ -12,7 +12,7 @@ export const VideoWatchPage = () => {
         <div>
             <h1>Watch {videoId}</h1>
             <div className='watch-video-div'>
-                <video controls='true' autoPlay='true'>
+                <video controls={true} autoPlay={true}>
                     <source src={srcApiUrl} type='video/mp4' />
                 </video>
             </div>

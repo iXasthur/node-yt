@@ -18,7 +18,7 @@ function App() {
             verify
         }}>
             <Router>
-                <NavBar hideTabs={!isAuthenticated} />
+                <NavBar />
                 { ready
                     ?
                         <div className="container">

@@ -54,7 +54,7 @@ export const VideoUploadPage = () => {
                                         id="title"
                                         type="text"
                                         name="title"
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         value={fileTitle}
                                         onChange={changeTitleHandler}
                                         required
