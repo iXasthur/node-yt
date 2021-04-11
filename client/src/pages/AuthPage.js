@@ -1,12 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {useHttp} from "../hooks/http.hook";
-import {useMessage} from "../hooks/message.hook";
-import {AuthContext} from "../context/AuthContext";
+import React, {useState, useContext} from 'react'
+import {AppContext} from "../context/AppContext";
 
 export const AuthPage = () => {
-    const authContext = useContext(AuthContext)
-    const message = useMessage()
-    const {loading, error, request, clearError} = useHttp()
+    const authContext = useContext(AppContext)
     const [form, setForm] = useState({
         email: '',
         password: ''
@@ -17,27 +13,12 @@ export const AuthPage = () => {
     }
 
     const signupHandler = async () => {
-        try {
-            await request('/api/auth/signup', 'POST', {...form})
-            authContext.verify()
-        } catch {
-
-        }
+        authContext.signUp(form.email, form.password)
     }
 
     const signinHandler = async () => {
-        try {
-            await request('/api/auth/signin', 'POST', {...form})
-            authContext.verify()
-        } catch {
-
-        }
+        authContext.signIn(form.email, form.password)
     }
-
-    useEffect(() => {
-        message(error)
-        clearError()
-    }, [error, message, clearError])
 
     return (
         <div className="row">
@@ -73,14 +54,14 @@ export const AuthPage = () => {
                             className="btn yellow darken-4"
                             style={{marginRight: 10}}
                             onClick={signinHandler}
-                            disabled={loading}
+                            disabled={authContext.isLoading}
                         >
                             Sign In
                         </button>
                         <button
                             className="btn gray lighten-1 black-text"
                             onClick={signupHandler}
-                            disabled={loading}
+                            disabled={authContext.isLoading}
                         >
                             Sign Up
                         </button>

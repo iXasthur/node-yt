@@ -1,41 +1,17 @@
 import React, {useContext} from 'react'
 import {NavLink, useLocation} from 'react-router-dom'
-import {AuthContext} from "../context/AuthContext";
-import {useHttp} from "../hooks/http.hook";
+import {AppContext} from "../context/AppContext";
 
 export const NavBar = () => {
-    const {request} = useHttp()
-
-    const authContext = useContext(AuthContext)
+    const authContext = useContext(AppContext)
 
     const logoutHandler = async (event) => {
         event.preventDefault()
-
-        try {
-            await request('/api/auth/signout', 'POST')
-            authContext.verify()
-        } catch (e) {
-            console.log(e)
-        }
+        authContext.signOut()
     }
 
     let title = 'Node-yt'
     const location = useLocation().pathname
-    // switch (location) {
-    //     case '/': {
-    //         break
-    //     }
-    //     case '/auth': {
-    //         break
-    //     }
-    //     case '/watch': {
-    //         break
-    //     }
-    //     case '/upload': {
-    //         break
-    //     }
-    // }
-
     return (
         <nav>
             <div className="nav-wrapper blue darken-1" style={{ padding: '0 2rem' }}>

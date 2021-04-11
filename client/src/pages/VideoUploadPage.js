@@ -1,10 +1,10 @@
 import React, {useContext, useState, useEffect} from 'react'
-import {AuthContext} from "../context/AuthContext";
+import {AppContext} from "../context/AppContext";
 import {Loader} from "../components/Loader";
 
 
 export const VideoUploadPage = () => {
-    const authContext = useContext(AuthContext)
+    const authContext = useContext(AppContext)
 
     const [loading, setLoading] = useState(false);
 
