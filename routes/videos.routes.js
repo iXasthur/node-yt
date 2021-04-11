@@ -6,23 +6,6 @@ const router = Router()
 const path = require("path");
 const fs = require("fs");
 
-router.get(
-    '/',
-    verifyToken,
-    async (req, res) => {
-        try {
-            let videos = await Video.find({})
-            res.json({
-                videos: videos
-            })
-        } catch (e) {
-            console.log(e)
-            res.status(500).json({
-                message: "Something went wrong..."
-            })
-        }
-    }
-)
 
 router.get(
     '/file/:id',
