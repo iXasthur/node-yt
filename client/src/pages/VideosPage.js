@@ -26,8 +26,9 @@ export const VideosPage = () => {
             const query = `
                     query($qJwt: String!) {
                         videos(jwt: $qJwt) {
-                            jwt
-                            error
+                            _id
+                            title
+                            fileName
                         }
                     }
                 `;
@@ -43,10 +44,19 @@ export const VideosPage = () => {
             })
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res.data)
-                    // setIsLoading(false)
+                    let data = res.data
+                    if (data) {
+                        let videos = data.videos
+                        if (videos) {
+                            setVideos(videos)
+                            setIsLoading(false)
+                        } else {
+                            authContext.signOut()
+                        }
+                    } else {
+                        authContext.signOut()
+                    }
                 });
-            setIsLoading(false)
         }
 
         if (isLoading) {

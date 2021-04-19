@@ -39,7 +39,7 @@ const AuthResultType = new GraphQLObjectType({
 const VideoType = new GraphQLObjectType({
     name: "Video",
     fields: () => ({
-        id: {type: GraphQLString},
+        _id: {type: GraphQLString},
         title: {type: GraphQLString},
         fileName: {type: GraphQLString},
     })
@@ -95,9 +95,9 @@ const RootQuery = new GraphQLObjectType({
                 let jwt = args.jwt
                 if (verifyJwt(jwt)) {
                     let videos = await Video.find({})
-                    return { videos }
+                    return videos
                 } else {
-                    return { videos: null }
+                    return null
                 }
             }
         }
