@@ -23,12 +23,30 @@ export const VideosPage = () => {
     useEffect(() => {
         async function fetchVideos() {
             let jwt = getCookie('jwt')
-            authContext.socket.emit('get_videos_list', {jwt})
+            const query = `
+                    query($qJwt: String!) {
+                        videos(jwt: $qJwt) {
+                            jwt
+                            error
+                        }
+                    }
+                `;
+            const variables = {qJwt: jwt};
 
-            authContext.socket.on('get_videos_list_result', (data) => {
-                setVideos(data.videos)
-                setIsLoading(false)
+            fetch('/graphql', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    query,
+                    variables
+                }),
             })
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res.data)
+                    // setIsLoading(false)
+                });
+            setIsLoading(false)
         }
 
         if (isLoading) {
