@@ -73,7 +73,7 @@ const RootQuery = new GraphQLObjectType({
 
                 const user = await User.findOne({email})
                 if (!user) {
-                    return { jwt: null, error: 'User does not exis' }
+                    return { jwt: null, error: 'User does not exist' }
                 }
 
                 const isMatch = await bcrypt.compare(password, user.hashedPassword)
