@@ -61,7 +61,7 @@ export const VideosPage = () => {
                 <NavLink
                     key='length'
                     className="collection-item blue"
-                    to={``}
+                    to={`#`}
                 >
                     Count: {videos.length}
                 </NavLink>

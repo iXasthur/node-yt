@@ -78,7 +78,7 @@ export const VideoUploadPage = () => {
                                 <span>File</span>
                                 <input
                                     type="file"
-                                    accept=".mp4"
+                                    accept="video/*"
                                     ref={fileInputRef}
                                     onChange={changeFileHandler}
                                     required
