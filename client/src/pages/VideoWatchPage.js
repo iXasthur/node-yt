@@ -3,6 +3,7 @@ import {useLocation} from "react-router-dom";
 import {AppContext} from "../context/AppContext";
 import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
 import {getCookie} from "../utils/CookieAssistant";
+import {FcLike, RiDeleteBinLine} from "react-icons/all";
 
 export const VideoWatchPage = () => {
 
@@ -40,12 +41,21 @@ export const VideoWatchPage = () => {
         )
     }
 
+    const video = videos[0]
+
     return (
         <div>
-            <h1>Watch {videos[0].title}</h1>
-            <div className='watch-video-div'>
+            <h1>Watch {video.title}</h1>
+            <div className="row">
+                <div className="col"><FcLike /></div>
+                <div className="col">{video.likes.toString()}</div>
+            </div>
+            <div className="row">
+                <div className="secondary-content col"><RiDeleteBinLine /></div>
+            </div>
+            <div className='watch-video-div' style={({ marginBottom: '10rem', marginTop: '2rem' })}>
                 <video controls={true} autoPlay={true} >
-                    <source src={'/api/videos/file/' + videos[0]._id} type='video/mp4' />
+                    <source src={'/api/videos/file/' + video._id} type='video/mp4' />
                 </video>
             </div>
         </div>
