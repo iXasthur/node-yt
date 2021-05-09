@@ -129,6 +129,20 @@ async function start() {
                 }
             })
 
+            socket.on('get_video', async (data) => {
+                if (data) {
+                    let {videoId, jwt} = data
+                    if (verifyJwt(jwt)) {
+                        let videos = await Video.find({_id: videoId})
+                        socket.emit('get_video_result', { videos })
+                    } else {
+                        socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                    }
+                } else {
+                    socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                }
+            })
+
             socket.on('disconnect', async () => {
                 console.log('User disconnected with id = ' + socket.id)
             })

@@ -34,35 +34,40 @@ export const VideosPage = () => {
     }
 
     return (
-        <div className="collection" style={{marginTop: '5rem'}}>
-            {
-                videos.map(video => {
-                    return(
-                        <NavLink
-                            key={video._id}
-                            className="collection-item"
-                            to={`/watch?id=${video._id}`}
-                        >
-                            {video.title}
-                            <div className="secondary-content row">
-                                <div className="col"><FcDislike /></div>
-                                <div className="col">{video.dislikes.toString()}</div>
-                            </div>
-                            <div className="secondary-content row">
-                                <div className="col"><FcLike /></div>
-                                <div className="col">{video.likes.toString()}</div>
-                            </div>
-                        </NavLink>
-                    )
-                })
-            }
-            <NavLink
-                key='length'
-                className="collection-item blue"
-                to={``}
-            >
-                Count: {videos.length}
-            </NavLink>
+        <div>
+            <h2>Videos</h2>
+            <div className="collection">
+                {
+                    videos.map(video => {
+                        return(
+                            <NavLink
+                                key={video._id}
+                                className="collection-item"
+                                to={`/watch?id=${video._id}`}
+                            >
+                                {video.title}
+                                <div className="secondary-content row">
+                                    <div className="col"><FcDislike /></div>
+                                    <div className="col">{video.dislikes.toString()}</div>
+                                </div>
+                                <div className="secondary-content row">
+                                    <div className="col"><FcLike /></div>
+                                    <div className="col">{video.likes.toString()}</div>
+                                </div>
+                            </NavLink>
+                        )
+                    })
+                }
+                <NavLink
+                    key='length'
+                    className="collection-item blue"
+                    to={``}
+                >
+                    Count: {videos.length}
+                </NavLink>
+            </div>
         </div>
+
+
     )
 }
