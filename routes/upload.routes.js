@@ -41,9 +41,11 @@ router.post(
                 try {
                     const fileName = req.file.filename
                     const title = req.body.title
+                    const authorId = req.user.userId
                     const video = new Video({
                         title,
-                        fileName
+                        fileName,
+                        authorId
                     })
                     await video.save()
 
