@@ -13,11 +13,7 @@ const schema = new Schema({
     likedVideoIds: [{
         type: Types.ObjectId,
         ref: 'Video'
-    }],
-    dislikedVideoIds: [{
-        type: Types.ObjectId,
-        ref: 'Video'
-    }],
+    }]
 })
 
 module.exports = model('User', schema)

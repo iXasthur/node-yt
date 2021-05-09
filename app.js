@@ -157,6 +157,53 @@ async function start() {
                 }
             })
 
+            // Not effective
+            socket.on('video_like', async (data) => {
+                if (data) {
+                    let {id, jwt} = data
+                    let decoded = verifyJwt(jwt)
+                    if (decoded) {
+                        try {
+                            const user = await User.findById(decoded.userId)
+                            const video = await Video.findById(id)
+
+                            var likedVideosByUser = user.likedVideoIds
+
+                            const index = likedVideosByUser.indexOf(id);
+                            if (index > -1) {
+                                likedVideosByUser.splice(index, 1);
+                            } else {
+                                likedVideosByUser.push(id)
+                            }
+
+                            await User.findByIdAndUpdate(decoded.userId, {
+                                likedVideoIds: likedVideosByUser
+                            },  {
+                                upsert: true,
+                                useFindAndModify: false
+                            })
+
+                            const likesCount = likedVideosByUser.length
+
+                            await Video.findByIdAndUpdate(id, {
+                                likes: likesCount
+                            },  {
+                                upsert: true,
+                                useFindAndModify: false
+                            })
+
+                            socket.emit('video_like_result', { likes: likesCount })
+                        } catch (e) {
+                            socket.emit('video_like_result', { likes: -1 })
+                        }
+                    } else {
+                        socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                    }
+                } else {
+                    socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                }
+            })
+
             socket.on('disconnect', async () => {
                 console.log('User disconnected with id = ' + socket.id)
             })

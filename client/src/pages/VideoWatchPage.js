@@ -13,14 +13,17 @@ export const VideoWatchPage = () => {
 
     const authContext = useContext(AppContext)
 
+    const [likes, setLikes] = useState(-1)
+
     const [isLoading, setIsLoading] = useState(true)
+    const [isLiking, setIsLiking] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
-    const [videos, setVideos] = useState(null)
+    const [video, setVideo] = useState(null)
 
     const deleteVideo = () => {
         async function deleteAsync() {
             let jwt = getCookie('jwt')
-            let id = videos[0]._id
+            let id = video._id
 
             authContext.socket.emit('delete_video', {jwt, id})
 
@@ -35,6 +38,25 @@ export const VideoWatchPage = () => {
         }
     }
 
+    const likeVideo = () => {
+        async function likeAsync() {
+            let jwt = getCookie('jwt')
+            let id = video._id
+
+            authContext.socket.emit('video_like', {jwt, id})
+
+            authContext.socket.on('video_like_result', (data) => {
+                setLikes(data.likes)
+                setIsLiking(false)
+            })
+        }
+
+        if (!isLiking) {
+            setIsLiking(true);
+            likeAsync()
+        }
+    }
+
     useEffect(() => {
         async function fetchVideo() {
             const videoId = query.get('id')
@@ -45,7 +67,8 @@ export const VideoWatchPage = () => {
 
             authContext.socket.on('get_video_result', (data) => {
                 if (data.videos) {
-                    setVideos(data.videos)
+                    setLikes(data.videos[0].likes)
+                    setVideo(data.videos[0])
                     setIsLoading(false)
                 }
             })
@@ -54,28 +77,26 @@ export const VideoWatchPage = () => {
         if (isLoading) {
             fetchVideo()
         }
-    }, [isLoading, query])
+    }, [query])
 
-    if (isLoading || isDeleting || videos.length < 1) {
+    if (isLoading || isDeleting || !video) {
         return (
             <LoaderScreenCentered />
         )
     }
-
-    const video = videos[0]
 
     return (
         <div>
             <h1>Watch {video.title}</h1>
             <div className="row">
                 <div className="col" onClick={(e) => {
-                    console.log('like')
+                    likeVideo()
                 }}><FcLike /></div>
-                <div className="col">{video.likes.toString()}</div>
+                <div className="col">{likes.toString()}</div>
             </div>
             <div className="row">
                 <div className="secondary-content col" onClick={(e) => {
-                    deleteVideo();
+                    deleteVideo()
                 }}><RiDeleteBinLine /></div>
             </div>
             <div className='watch-video-div' style={({ marginBottom: '10rem', marginTop: '2rem' })}>
