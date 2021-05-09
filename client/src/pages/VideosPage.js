@@ -32,7 +32,7 @@ export const VideosPage = () => {
             <LoaderScreenCentered />
         )
     }
-    
+
     return (
         <div className="collection" style={{marginTop: '5rem'}}>
             {
@@ -56,6 +56,13 @@ export const VideosPage = () => {
                     )
                 })
             }
+            <NavLink
+                key='length'
+                className="collection-item blue"
+                to={``}
+            >
+                Count: {videos.length}
+            </NavLink>
         </div>
     )
 }
