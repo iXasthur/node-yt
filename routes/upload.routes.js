@@ -5,13 +5,14 @@ const verifyToken = require('../middlewares/verifyToken.middleware')
 const multer = require('multer')
 const router = Router()
 const path = require("path");
+const ffmpeg = require("ffmpeg");
 
 const storageConfig = multer.diskStorage({
     destination: (req, file, cb) =>{
         cb(null, config.get('videosRoot'));
     },
     filename: (req, file, cb) =>{
-        cb(null, file.fieldname + '-' + Date.now() + '-' + Math.random() + path.extname(file.originalname));
+        cb(null, 'source' + '-' + Date.now() + '-' + Math.random() + path.extname(file.originalname));
     }
 });
 
@@ -47,17 +48,56 @@ router.post(
                         fileName,
                         authorId
                     })
+
                     await video.save()
 
-                    res.json({
-                        message: "Successfully uploaded file"
-                    })
+                    const processedFileName = 'video-' + video._id + '.mp4'
+
+                    const fileToProcessPath = path.join(config.get('videosRoot'), video.fileName)
+                    const processedFilePath = path.join(config.get('videosRoot'), processedFileName)
+
+                    const process = new ffmpeg(fileToProcessPath);
+                    process.then(async function (ffvideo) {
+                        ffvideo
+                            .setVideoFormat('mp4')
+                            .setVideoSize('?x480', true, true, '#ffffff')
+                            .save(processedFilePath, async function (error, file) {
+                                if (!error) {
+
+                                    video.fileName = processedFileName
+                                    video.isProcessing = false
+
+                                    await Video.findByIdAndUpdate(video._id, {
+                                        isProcessing: false,
+                                        fileName: processedFileName
+                                    },  {
+                                        upsert: true,
+                                        useFindAndModify: false
+                                    })
+
+                                    res.json({
+                                        message: "Successfully uploaded file"
+                                    })
+                                } else {
+                                    console.log(error);
+                                    res.status(500).json({
+                                        message: "Something went wrong..."
+                                    })
+                                }
+                            });
+                    }, function (err) {
+                        console.log(err);
+                        res.status(500).json({
+                            message: "Something went wrong..."
+                        })
+                    });
                 } catch (e) {
                     console.log(e)
                     res.status(500).json({
                         message: "Something went wrong..."
                     })
                 }
+
             })
         } catch (e) {
             console.log(e)

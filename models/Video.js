@@ -14,6 +14,10 @@ const schema = new Schema({
         ref: 'User',
         required: true
     },
+    isProcessing: {
+        type: Boolean,
+        default: true
+    },
     likes: {
         type: Number,
         default: 0

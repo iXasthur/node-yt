@@ -44,8 +44,11 @@ export const VideosPage = () => {
                                 key={video._id}
                                 className="collection-item"
                                 to={`/watch?id=${video._id}`}
+                                onClick={ (event) => video.isProcessing ? event.preventDefault() : null
+                                }
                             >
                                 {video.title}
+                                {video.isProcessing ? ' (processing...)' : null}
                                 <div className="secondary-content row">
                                     <div className="col"><FcDislike /></div>
                                     <div className="col">{video.dislikes.toString()}</div>
@@ -62,6 +65,7 @@ export const VideosPage = () => {
                     key='length'
                     className="collection-item blue"
                     to={`#`}
+                    onClick={ (event) => event.preventDefault() }
                 >
                     Count: {videos.length}
                 </NavLink>
