@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react'
-import {useLocation} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {AppContext} from "../context/AppContext";
 import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
 import {getCookie} from "../utils/CookieAssistant";
@@ -7,12 +7,33 @@ import {FcLike, RiDeleteBinLine} from "react-icons/all";
 
 export const VideoWatchPage = () => {
 
+    const history = useHistory();
+
     const query = new URLSearchParams(useLocation().search)
 
     const authContext = useContext(AppContext)
 
     const [isLoading, setIsLoading] = useState(true)
+    const [isDeleting, setIsDeleting] = useState(false)
     const [videos, setVideos] = useState(null)
+
+    const deleteVideo = () => {
+        async function deleteAsync() {
+            let jwt = getCookie('jwt')
+            let id = videos[0]._id
+
+            authContext.socket.emit('delete_video', {jwt, id})
+
+            authContext.socket.on('delete_video_result', (data) => {
+                history.push('/')
+            })
+        }
+
+        if (!isDeleting) {
+            setIsDeleting(true);
+            deleteAsync()
+        }
+    }
 
     useEffect(() => {
         async function fetchVideo() {
@@ -35,7 +56,7 @@ export const VideoWatchPage = () => {
         }
     }, [isLoading, query])
 
-    if (isLoading || videos.length < 1) {
+    if (isLoading || isDeleting || videos.length < 1) {
         return (
             <LoaderScreenCentered />
         )
@@ -47,11 +68,15 @@ export const VideoWatchPage = () => {
         <div>
             <h1>Watch {video.title}</h1>
             <div className="row">
-                <div className="col"><FcLike /></div>
+                <div className="col" onClick={(e) => {
+                    console.log('like')
+                }}><FcLike /></div>
                 <div className="col">{video.likes.toString()}</div>
             </div>
             <div className="row">
-                <div className="secondary-content col"><RiDeleteBinLine /></div>
+                <div className="secondary-content col" onClick={(e) => {
+                    deleteVideo();
+                }}><RiDeleteBinLine /></div>
             </div>
             <div className='watch-video-div' style={({ marginBottom: '10rem', marginTop: '2rem' })}>
                 <video controls={true} autoPlay={true} >

@@ -143,6 +143,20 @@ async function start() {
                 }
             })
 
+            socket.on('delete_video', async (data) => {
+                if (data) {
+                    let {id, jwt} = data
+                    if (verifyJwt(jwt)) {
+                        let videos = await Video.findOneAndDelete({_id: id})
+                        socket.emit('delete_video_result', { videos })
+                    } else {
+                        socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                    }
+                } else {
+                    socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                }
+            })
+
             socket.on('disconnect', async () => {
                 console.log('User disconnected with id = ' + socket.id)
             })
