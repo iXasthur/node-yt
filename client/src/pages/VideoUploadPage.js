@@ -53,11 +53,12 @@ export const VideoUploadPage = () => {
     return(
         <div className="row">
             <div className="col s6 offset-s3">
+                <h2>Upload video</h2>
+                { loading ? <Loader /> : <div/>}
                 <div className="card blue-grey darken-1">
                     <form action="#" onSubmit={handleSubmit}>
                         <div className="card-content white-text">
-                            { loading ? <Loader /> : <div/>}
-                            <div style={{marginTop: 30}}>
+                            <div>
                                 <div className="input-field">
                                     <input
                                         id="title"
