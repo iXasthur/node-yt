@@ -4,6 +4,7 @@ import {VideosPage} from "./pages/VideosPage";
 import {VideoUploadPage} from "./pages/VideoUploadPage";
 import {VideoWatchPage} from "./pages/VideoWatchPage";
 import {AuthPage} from "./pages/AuthPage";
+import {ProfilePage} from "./pages/ProfilePage";
 
 export const useRoutes = isAuthenticated => {
     if (isAuthenticated) {
@@ -11,6 +12,9 @@ export const useRoutes = isAuthenticated => {
             <Switch>
                 <Route path='/' exact>
                     <VideosPage/>
+                </Route>
+                <Route path='/profile' exact>
+                    <ProfilePage/>
                 </Route>
                 <Route path='/upload' exact>
                     <VideoUploadPage/>

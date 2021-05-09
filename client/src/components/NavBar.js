@@ -19,6 +19,7 @@ export const NavBar = () => {
                 { (location !== '/auth')
                     ?
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
+                            <li style={ location === '/profile' ? {background: 'darkcyan'} : {}}><NavLink to={'/profile'}>Profile</NavLink></li>
                             <li style={ location === '/upload' ? {background: 'darkcyan'} : {}}><NavLink to={'/upload'}>Upload</NavLink></li>
                             <li><a href='/' onClick={logoutHandler}>Sign Out</a></li>
                         </ul>

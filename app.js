@@ -157,7 +157,6 @@ async function start() {
                 }
             })
 
-            // Not effective
             socket.on('video_like', async (data) => {
                 if (data) {
                     let {id, jwt} = data
@@ -168,12 +167,15 @@ async function start() {
                             const video = await Video.findById(id)
 
                             var likedVideosByUser = user.likedVideoIds
+                            var videoLikesCount = video.likes
 
                             const index = likedVideosByUser.indexOf(id);
                             if (index > -1) {
                                 likedVideosByUser.splice(index, 1);
+                                videoLikesCount--
                             } else {
                                 likedVideosByUser.push(id)
+                                videoLikesCount++
                             }
 
                             await User.findByIdAndUpdate(decoded.userId, {
@@ -183,18 +185,80 @@ async function start() {
                                 useFindAndModify: false
                             })
 
-                            const likesCount = likedVideosByUser.length
 
                             await Video.findByIdAndUpdate(id, {
-                                likes: likesCount
+                                likes: videoLikesCount
                             },  {
                                 upsert: true,
                                 useFindAndModify: false
                             })
 
-                            socket.emit('video_like_result', { likes: likesCount })
+                            socket.emit('video_like_result', { likes: videoLikesCount })
                         } catch (e) {
                             socket.emit('video_like_result', { likes: -1 })
+                        }
+                    } else {
+                        socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                    }
+                } else {
+                    socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                }
+            })
+
+            socket.on('get_user', async (data) => {
+                if (data) {
+                    let {jwt} = data
+                    let decoded = verifyJwt(jwt)
+                    if (decoded) {
+                        try {
+                            const user = await User.findById(decoded.userId)
+                            socket.emit('get_user_result', { user })
+                        } catch (e) {
+                            socket.emit('auth_result', { error: 'Invalid user id in jwt' })
+                        }
+                    } else {
+                        socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                    }
+                } else {
+                    socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                }
+            })
+
+            socket.on('get_uploaded_videos', async (data) => {
+                if (data) {
+                    let {jwt} = data
+                    let decoded = verifyJwt(jwt)
+                    if (decoded) {
+                        try {
+                            const videos = await Video.find({ authorId: decoded.userId })
+                            socket.emit('get_uploaded_videos_result', { videos })
+                        } catch (e) {
+                            socket.emit('auth_result', { error: 'Invalid user id in jwt' })
+                        }
+                    } else {
+                        socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                    }
+                } else {
+                    socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
+                }
+            })
+
+            socket.on('get_liked_videos', async (data) => {
+                if (data) {
+                    let {jwt} = data
+                    let decoded = verifyJwt(jwt)
+                    if (decoded) {
+                        try {
+                            const user = await User.findById(decoded.userId)
+                            const ids = user.likedVideoIds
+
+                            const videos = await Video.find({
+                                '_id': { $in: ids }
+                            })
+
+                            socket.emit('get_liked_videos_result', { videos })
+                        } catch (e) {
+                            socket.emit('auth_result', { error: 'Invalid user id in jwt' })
                         }
                     } else {
                         socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
