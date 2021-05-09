@@ -6,6 +6,7 @@ const multer = require('multer')
 const router = Router()
 const path = require("path");
 const ffmpeg = require("ffmpeg");
+const fs = require("fs");
 
 const storageConfig = multer.diskStorage({
     destination: (req, file, cb) =>{
@@ -74,6 +75,13 @@ router.post(
                                         upsert: true,
                                         useFindAndModify: false
                                     })
+
+                                    if (config.get('shouldDeleteUnneededVideoFilesImmediately')) {
+                                        fs.unlink(fileToProcessPath,function(err){
+                                            if(err) return console.log(err);
+                                            console.log(fileToProcessPath + ' deleted successfully');
+                                        });
+                                    }
 
                                     res.json({
                                         message: "Successfully uploaded file"

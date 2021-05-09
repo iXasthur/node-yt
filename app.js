@@ -11,6 +11,8 @@ const bcrypt = require('bcryptjs')
 const app = express()
 const cors = require('cors')
 const jwt = require('jsonwebtoken');
+const fs = require("fs");
+const path = require("path");
 
 app.use(cors())
 app.use(cookieParser());
@@ -147,6 +149,9 @@ async function start() {
                 if (data) {
                     let {id, jwt} = data
                     if (verifyJwt(jwt)) {
+                        const video = await Video.findById(id)
+                        const videoFilePath = path.join(config.get('videosRoot'), video.fileName)
+
                         const users = await User.find({likedVideoIds: id})
 
                         for (var i = 0; i < users.length; i++) {
@@ -164,6 +169,13 @@ async function start() {
                         }
 
                         await Video.findOneAndDelete({_id: id})
+
+                        if (config.get('shouldDeleteUnneededVideoFilesImmediately')) {
+                            fs.unlink(videoFilePath,function(err){
+                                if(err) return console.log(err);
+                                console.log(videoFilePath + ' deleted successfully');
+                            });
+                        }
 
                         socket.emit('delete_video_result', { })
                     } else {
