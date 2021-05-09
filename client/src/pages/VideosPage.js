@@ -50,10 +50,6 @@ export const VideosPage = () => {
                                 {video.title}
                                 {video.isProcessing ? ' (processing...)' : null}
                                 <div className="secondary-content row">
-                                    <div className="col"><FcDislike /></div>
-                                    <div className="col">{video.dislikes.toString()}</div>
-                                </div>
-                                <div className="secondary-content row">
                                     <div className="col"><FcLike /></div>
                                     <div className="col">{video.likes.toString()}</div>
                                 </div>
