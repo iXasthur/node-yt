@@ -22,8 +22,10 @@ export const VideoWatchPage = () => {
             authContext.socket.emit('get_video', {jwt, videoId})
 
             authContext.socket.on('get_video_result', (data) => {
-                setVideos(data.videos)
-                setIsLoading(false)
+                if (data.videos) {
+                    setVideos(data.videos)
+                    setIsLoading(false)
+                }
             })
         }
 
