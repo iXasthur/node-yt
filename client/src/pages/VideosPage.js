@@ -3,6 +3,7 @@ import {AppContext} from "../context/AppContext";
 import {NavLink} from "react-router-dom";
 import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
 import { getCookie } from '../utils/CookieAssistant';
+import {FcDislike, FcLike} from "react-icons/all";
 
 export const VideosPage = () => {
     const authContext = useContext(AppContext)
@@ -31,7 +32,7 @@ export const VideosPage = () => {
             <LoaderScreenCentered />
         )
     }
-
+    
     return (
         <div className="collection" style={{marginTop: '5rem'}}>
             {
@@ -43,6 +44,14 @@ export const VideosPage = () => {
                             to={`/watch?id=${video._id}`}
                         >
                             {video.title}
+                            <div className="secondary-content row">
+                                <div className="col"><FcDislike /></div>
+                                <div className="col">{video.dislikes.toString()}</div>
+                            </div>
+                            <div className="secondary-content row">
+                                <div className="col"><FcLike /></div>
+                                <div className="col">{video.likes.toString()}</div>
+                            </div>
                         </NavLink>
                     )
                 })
