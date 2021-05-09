@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
     title: {
@@ -8,6 +8,18 @@ const schema = new Schema({
     fileName: {
         type: String,
         required: true
+    },
+    authorId: [{
+        type: Types.ObjectId,
+        ref: 'User'
+    }],
+    likes: {
+        type: Number,
+        default: 0
+    },
+    dislikes: {
+        type: Number,
+        default: 0
     }
 })
 

@@ -10,10 +10,14 @@ const schema = new Schema({
         type: String,
         required: true
     },
-    uploadedVideoIds: {
+    likedVideoIds: [{
         type: Types.ObjectId,
         ref: 'Video'
-    }
+    }],
+    dislikedVideoIds: [{
+        type: Types.ObjectId,
+        ref: 'Video'
+    }],
 })
 
 module.exports = model('User', schema)
