@@ -58,19 +58,17 @@ export const VideoUploadPage = () => {
                 <div className="card blue-grey darken-1">
                     <form action="#" onSubmit={handleSubmit}>
                         <div className="card-content white-text">
-                            <div>
-                                <div className="input-field">
-                                    <input
-                                        id="title"
-                                        type="text"
-                                        name="title"
-                                        autoComplete="off"
-                                        value={fileTitle}
-                                        onChange={changeTitleHandler}
-                                        required
-                                    />
-                                    <label htmlFor="title">Title</label>
-                                </div>
+                            <div className="input-field">
+                                <input
+                                    id="title"
+                                    type="text"
+                                    name="title"
+                                    autoComplete="off"
+                                    value={fileTitle}
+                                    onChange={changeTitleHandler}
+                                    required
+                                />
+                                <label htmlFor="title">Title</label>
                             </div>
                         </div>
                         <div className="card-content file-field input-field">
