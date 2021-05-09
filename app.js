@@ -147,7 +147,24 @@ async function start() {
                 if (data) {
                     let {id, jwt} = data
                     if (verifyJwt(jwt)) {
+                        const users = await User.find({likedVideoIds: id})
+
+                        for (var i = 0; i < users.length; i++) {
+                            const user = users[0]
+
+                            var likedVideosByUser = user.likedVideoIds
+                            likedVideosByUser.splice(likedVideosByUser.indexOf(id), 1)
+
+                            await User.findByIdAndUpdate(user._id, {
+                                likedVideoIds: likedVideosByUser
+                            },  {
+                                upsert: true,
+                                useFindAndModify: false
+                            })
+                        }
+
                         await Video.findOneAndDelete({_id: id})
+
                         socket.emit('delete_video_result', { })
                     } else {
                         socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
