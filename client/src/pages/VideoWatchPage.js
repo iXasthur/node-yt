@@ -100,7 +100,7 @@ export const VideoWatchPage = () => {
                 }}><RiDeleteBinLine /></div>
             </div>
             <div className='watch-video-div' style={({ marginBottom: '10rem', marginTop: '2rem' })}>
-                <video controls={true} autoPlay={true} >
+                <video controls={true} autoPlay={false} >
                     <source src={'/api/videos/file/' + video._id} type='video/mp4' />
                 </video>
             </div>
