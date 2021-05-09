@@ -9,10 +9,11 @@ const schema = new Schema({
         type: String,
         required: true
     },
-    authorId: [{
+    authorId: {
         type: Types.ObjectId,
-        ref: 'User'
-    }],
+        ref: 'User',
+        required: true
+    },
     likes: {
         type: Number,
         default: 0
