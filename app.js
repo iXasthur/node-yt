@@ -147,8 +147,8 @@ async function start() {
                 if (data) {
                     let {id, jwt} = data
                     if (verifyJwt(jwt)) {
-                        let videos = await Video.findOneAndDelete({_id: id})
-                        socket.emit('delete_video_result', { videos })
+                        await Video.findOneAndDelete({_id: id})
+                        socket.emit('delete_video_result', { })
                     } else {
                         socket.emit('auth_result', { error: 'Unable to verify provided jwt' })
                     }
