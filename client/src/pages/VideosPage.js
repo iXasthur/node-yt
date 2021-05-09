@@ -2,17 +2,7 @@ import React, {useState, useContext, useEffect} from 'react'
 import {AppContext} from "../context/AppContext";
 import {NavLink} from "react-router-dom";
 import {LoaderScreenCentered} from "../components/LoaderScreenCentered";
-
-function getCookie(name) {
-    let nameEQ = name + "=";
-    let ca = document.cookie.split(';');
-    for(let i = 0;i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
+import { getCookie } from '../utils/CookieAssistant';
 
 export const VideosPage = () => {
     const authContext = useContext(AppContext)
