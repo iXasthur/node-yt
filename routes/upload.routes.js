@@ -40,6 +40,8 @@ router.post(
                     return
                 }
 
+                console.log('Successfully received file ' + req.file.filename);
+
                 try {
                     const fileName = req.file.filename
                     const title = req.body.title
@@ -57,6 +59,7 @@ router.post(
                     const fileToProcessPath = path.join(config.get('videosRoot'), video.fileName)
                     const processedFilePath = path.join(config.get('videosRoot'), processedFileName)
 
+                    console.log('Initiating ffmpeg process for ' + fileToProcessPath);
                     const process = new ffmpeg(fileToProcessPath);
                     process.then(async function (ffvideo) {
                         ffvideo
