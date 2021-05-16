@@ -62,40 +62,47 @@ router.post(
                     console.log('Initiating ffmpeg process for ' + fileToProcessPath);
                     const process = new ffmpeg(fileToProcessPath);
                     process.then(async function (ffvideo) {
-                        ffvideo
-                            .setVideoFormat('mp4')
-                            .setVideoSize('?x480', true, true, '#ffffff')
-                            .save(processedFilePath, async function (error, file) {
-                                if (!error) {
+                        try {
+                            ffvideo
+                                .setVideoFormat('mp4')
+                                .setVideoSize('?x480', true, true, '#ffffff')
+                                .save(processedFilePath, async function (error, file) {
+                                    if (!error) {
 
-                                    video.fileName = processedFileName
-                                    video.isProcessing = false
+                                        video.fileName = processedFileName
+                                        video.isProcessing = false
 
-                                    await Video.findByIdAndUpdate(video._id, {
-                                        isProcessing: false,
-                                        fileName: processedFileName
-                                    },  {
-                                        upsert: true,
-                                        useFindAndModify: false
-                                    })
+                                        await Video.findByIdAndUpdate(video._id, {
+                                            isProcessing: false,
+                                            fileName: processedFileName
+                                        },  {
+                                            upsert: true,
+                                            useFindAndModify: false
+                                        })
 
-                                    if (config.get('shouldDeleteUnneededVideoFilesImmediately')) {
-                                        fs.unlink(fileToProcessPath,function(err){
-                                            if(err) return console.log(err);
-                                            console.log(fileToProcessPath + ' deleted successfully');
-                                        });
+                                        if (config.get('shouldDeleteUnneededVideoFilesImmediately')) {
+                                            fs.unlink(fileToProcessPath,function(err){
+                                                if(err) return console.log(err);
+                                                console.log(fileToProcessPath + ' deleted successfully');
+                                            });
+                                        }
+
+                                        res.json({
+                                            message: "Successfully uploaded file"
+                                        })
+                                    } else {
+                                        console.log(error);
+                                        res.status(500).json({
+                                            message: "Something went wrong..."
+                                        })
                                     }
-
-                                    res.json({
-                                        message: "Successfully uploaded file"
-                                    })
-                                } else {
-                                    console.log(error);
-                                    res.status(500).json({
-                                        message: "Something went wrong..."
-                                    })
-                                }
-                            });
+                                });
+                        } catch (e) {
+                            console.log(e);
+                            res.status(500).json({
+                                message: "Something went wrong..."
+                            })
+                        }
                     }, function (err) {
                         console.log(err);
                         res.status(500).json({

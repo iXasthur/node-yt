@@ -2,6 +2,6 @@
   "port": 5000,
   "jwtSecret": "morgenshterna4",
   "shouldDeleteUnneededVideoFilesImmediately": true,
-  "videosRoot": "D:\\Developer\\JavaScript\\node-yt\\uploads",
+  "videosRoot": "/Users/ro/Desktop/node-yt-uploads",
   "mongoUri": "mongodb://localhost:27017/node-yt"
 }
